@@ -1,0 +1,82 @@
+#include <iostream>
+using namespace std;
+
+class Fraction {
+private:
+    int nba;
+    int yb;
+    static int count;
+
+    int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+public:
+    Fraction() {
+        nba = 0;
+        yb = 1;
+        count++;
+    }
+
+    Fraction(int n, int d) {
+        if (d == 0) d = 1;
+        nba = n;
+        yb = d;
+        reduce();
+        count++;
+    }
+
+    ~Fraction() { count--; }
+
+    void reduce() {
+        int g = gcd(nba, yb);
+        nba /= g;
+        yb /= g;
+    }
+
+    Fraction operator+(Fraction f) {
+        return Fraction(nba * f.yb + f.nba * yb, yb * f.yb);
+    }
+
+    Fraction operator-(Fraction f) {
+        return Fraction(nba * f.yb - f.nba * yb, yb * f.yb);
+    }
+
+    Fraction operator*(Fraction f) {
+        return Fraction(nba * f.nba, yb * f.yb);
+    }
+
+    Fraction operator/(Fraction f) {
+        return Fraction(nba * f.yb, yb * f.nba);
+    }
+
+    static int getCount() {
+        return count;
+    }
+
+    void show() {
+        cout << nba << "/" << yb;
+    }
+};
+
+int Fraction::count = 0;
+
+int main() 
+{
+    setlocale(LC_ALL,"Russian");
+    Fraction a(1, 2), b(3, 4);
+    Fraction c = a + b;
+    Fraction d = a - b;
+    Fraction e = a * b;
+    Fraction f = a / b;
+
+    cout << "a = "; a.show(); cout << endl;
+    cout << "b = "; b.show(); cout << endl;
+    cout << "a + b = "; c.show(); cout << endl;
+    cout << "a - b = "; d.show(); cout << endl;
+    cout << "a * b = "; e.show(); cout << endl;
+    cout << "a / b = "; f.show(); cout << endl;
+    cout << "Количество дробей: " << Fraction::getCount() << endl;
+
+    return 0;
+}

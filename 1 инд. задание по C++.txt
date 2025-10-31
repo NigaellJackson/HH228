@@ -1,0 +1,157 @@
+#include <iostream>
+using namespace std;
+
+class Vector {
+private:
+    int* data;
+    int size;
+
+public:
+    Vector(int n) {
+        size = n;
+        data = new int[size];
+        for (int i = 0; i < size; i++) data[i] = 0;
+    }
+
+    ~Vector() {
+        delete[] data;
+    }
+
+    int& operator[](int index) {
+        return data[index];
+    }
+
+    void print() {
+        for (int i = 0; i < size; i++)
+            cout << data[i] << " ";
+        cout << endl;
+    }
+
+    Vector& operator++() {
+        for (int i = 0; i < size; i++) data[i]++;
+        return *this;
+    }
+
+    Vector operator++(int) {
+        Vector temp = *this;
+        for (int i = 0; i < size; i++) data[i]++;
+        return temp;
+    }
+
+
+    Vector& operator--() {
+        for (int i = 0; i < size; i++) data[i]--;
+        return *this;
+    }
+
+    Vector operator--(int) {
+        Vector temp = *this;
+        for (int i = 0; i < size; i++) data[i]--;
+        return temp;
+    }
+};
+
+
+class Matrix {
+private:
+    int** data;
+    int a;
+    int b;
+
+public:
+    Matrix(int r, int c) 
+    {
+        a = r;
+        b = c;
+        data = new int* [a];
+        for (int i = 0; i < a; i++) {
+            data[i] = new int[b];
+            for (int j = 0; j < b; j++)
+                data[i][j] = 0;
+        }
+    }
+
+    ~Matrix() 
+    {
+        for (int i = 0; i < a; i++)
+            delete[] data[i];
+        delete[] data;
+    }
+
+    int getAt(int i, int j) const 
+    {
+        return data[i][j];
+    }
+
+    void setAt(int i, int j, int val) 
+    {
+        data[i][j] = val;
+    }
+
+    void print() 
+    {
+        for (int i = 0; i < a; i++) {
+            for (int j = 0; j < b; j++)
+                cout << data[i][j] << " ";
+            cout << endl;
+        }
+    }
+
+    Matrix& operator++() 
+    {
+        for (int i = 0; i < a; i++)
+            for (int j = 0; j < b; j++)
+                data[i][j]++;
+        return *this;
+    }
+
+    Matrix operator++(int) 
+    {
+        Matrix temp = *this;
+        for (int i = 0; i < a; i++)
+            for (int j = 0; j < b; j++)
+                data[i][j]++;
+        return temp;
+    }
+
+    Matrix& operator--() 
+    {
+        for (int i = 0; i < a; i++)
+            for (int j = 0; j < b; j++)
+                data[i][j]--;
+        return *this;
+    }
+
+    Matrix operator--(int) 
+    {
+        Matrix temp = *this;
+        for (int i = 0; i < a; i++)
+            for (int j = 0; j < b; j++)
+                data[i][j]--;
+        return temp;
+    }
+};
+
+
+int main() 
+{
+    setlocale(LC_ALL, "Russian");
+    Vector v(5);
+    for (int i = 0; i < 5; i++) v[i] = i + 1;
+    cout << "Вектор: ";
+    v.print();
+
+    v++;
+    cout << "После ++ : ";
+    v.print();
+
+    Matrix m(2, 3);
+    m.setAt(0, 0, 5);
+    m.setAt(1, 2, 9);
+    cout << "Матрица:" << endl;
+    m.print();
+
+    m++;
+    cout << "После m++:" << endl;
+    m.print();
+}
